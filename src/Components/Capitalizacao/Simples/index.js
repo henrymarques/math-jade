@@ -42,25 +42,33 @@ export default class CapSimples extends Component {
     this.calcular(item)
   }
 
-  convertStateToInt = () => {
-    const keys = Object.keys(this.state)
-    let numbers = keys.map(item => Number(this.state[item]))
-    return numbers
-  }
-
   calcular = item => {
-    this.convertStateToInt()
     let { taxa, capital, juros, tempo, montante } = this.state
+    taxa = Number(taxa)
+    capital = Number(capital)
+    juros = Number(juros)
+    tempo = Number(tempo)
+    montante = Number(montante)
 
     switch (item) {
       case 'capital': {
-        capital = juros / ((taxa / 100) * (tempo / 30))
+        if (juros === 0) {
+          capital = montante / (1 + (taxa / 100) * (tempo / 30))
+        } else {
+          capital = montante - juros
+        }
+        capital = capital.toFixed(2)
         this.setState({ capital })
         break
       }
       case 'taxa': {
-        taxa = juros / (capital * tempo)
-        this.setState({ taxa: taxa / 100 })
+        if (juros === 0) {
+          taxa = (montante - capital) / (capital * (tempo / 30))
+        } else {
+          taxa = juros / (capital * (tempo / 30))
+        }
+        taxa = (taxa * 100).toFixed(2)
+        this.setState({ taxa })
         break
       }
       case 'juros': {
@@ -69,12 +77,20 @@ export default class CapSimples extends Component {
         break
       }
       case 'tempo': {
-        tempo = juros / (capital * (taxa / 100))
+        if (juros === 0) {
+          tempo = (montante - capital) / (capital * taxa)
+        } else {
+          tempo = juros / (capital * taxa)
+        }
+        tempo = tempo.toFixed(2)
         this.setState({ tempo })
         break
       }
       case 'montante': {
+        if (capital === 0) {
+        }
         montante = capital * (1 + (taxa / 100) * (tempo / 30))
+
         this.setState({ montante })
         break
       }
