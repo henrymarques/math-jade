@@ -117,19 +117,19 @@ export default class CapSimples extends Component {
           <input
             className="form-control shadow-none"
             type="text"
+            placeholder="Montante"
+            value={this.state.montante}
+            name="montante"
+            onChange={this.handleChange}
+          />
+          <input
+            className="form-control shadow-none"
+            type="text"
             placeholder="Capital"
             value={this.state.capital}
             name="capital"
             onChange={this.handleChange}
           />
-          {/* <input
-            className="form-control shadow-none"
-            type="text"
-            placeholder="Montante"
-            value={this.state.montante}
-            name="montante"
-            onChange={this.handleChange}
-          /> */}
           <input
             className="form-control shadow-none"
             type="text"
