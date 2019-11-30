@@ -54,12 +54,6 @@ export default class SisConstante extends Component {
     window.location.reload()
   }
 
-  /*
-      amortizacao = prestacao / periodo
-      parcela = amortizacao + pagoEmJuros
-      prestacao -= amortizacao
-  */
-
   calcular = () => {
     let totalParcela = 0
     let totalPagoJuros = 0
@@ -77,10 +71,6 @@ export default class SisConstante extends Component {
     let K =
       (Math.pow(1 + juros, periodo) * juros) /
       (Math.pow(1 + juros, periodo) - 1)
-
-    // K =
-    //   (Math.pow(1 + juros, periodo) * juros) /
-    //   (Math.pow(1 + juros, periodo) - 1)
 
     parcela = prestacao * K
     parcela = parcela.toFixed(2)

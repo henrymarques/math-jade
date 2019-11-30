@@ -11,6 +11,7 @@ export default class CapSimples extends Component {
       taxa: '',
       juros: '',
       tempo: '',
+      montante: '',
       isValid: true
     }
   }
@@ -49,7 +50,7 @@ export default class CapSimples extends Component {
 
   calcular = item => {
     this.convertStateToInt()
-    let { taxa, capital, juros, tempo } = this.state
+    let { taxa, capital, juros, tempo, montante } = this.state
 
     switch (item) {
       case 'capital': {
@@ -70,6 +71,11 @@ export default class CapSimples extends Component {
       case 'tempo': {
         tempo = juros / (capital * (taxa / 100))
         this.setState({ tempo })
+        break
+      }
+      case 'montante': {
+        montante = capital * (1 + (taxa / 100) * (tempo / 30))
+        this.setState({ montante })
         break
       }
       default: {
@@ -106,6 +112,7 @@ export default class CapSimples extends Component {
       <div className="Index">
         <h3>Deixe em branco o campo que deseja calcular</h3>
         {!this.state.isValid && this.renderError()}
+        <span>Se o campo não estiver sendo usado, insira 0</span>
         <form className="form-group" onSubmit={this.handleSubmit}>
           <input
             className="form-control shadow-none"
