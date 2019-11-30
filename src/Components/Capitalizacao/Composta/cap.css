@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h4 {
+  font-size: 20px;
+  animation-name: rainbow;
+  animation-duration: 1.2s;
+  /* animation-iteration-count: infinite; */
+}
+
+@keyframes rainbow {
+  from {
+    color: #f00;
+  }
+  to {
+    color: #282c34;
+  }
+}
+
+button.opcoes {
+  background-color: #fff;
+  color: #2ecc71;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #2ecc71;
+}
+
+button.opcoes:hover {
+  cursor: pointer;
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+input.opcoes {
+  background-color: #2ecc71;
+  color: #282c34;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+}
+
+input.opcoes:hover {
+  color: #5f27cd;
+  text-decoration: none;
+}
+
+input {
+  margin-bottom: 10px;
+  outline: none;
+  text-align: center;
+}
+
+a {
+  color: #282c34;
+  /* text-transform: uppercase; */
+}
+
+a:hover {
+  text-decoration: none;
+  color: #007bff;
+}
+
+span {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.test {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+}
