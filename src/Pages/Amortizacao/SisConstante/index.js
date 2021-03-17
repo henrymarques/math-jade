@@ -55,6 +55,7 @@ export default class SisConstante extends Component {
   }
 
   calcular = () => {
+    //this.convertStateToInt()
     let totalParcela = 0
     let totalPagoJuros = 0
     let totalAmortizacao = 0
@@ -62,46 +63,20 @@ export default class SisConstante extends Component {
 
     let pagoEmJuros, parcela, amortizacao
     let { prestacao, juros, periodo } = this.state
-    prestacao = Number(prestacao)
-    juros = Number(juros)
-    periodo = Number(periodo)
 
+    amortizacao = prestacao / periodo
     juros = juros / 100
-
-    let K =
-      (Math.pow(1 + juros, periodo) * juros) /
-      (Math.pow(1 + juros, periodo) - 1)
-
-    parcela = prestacao * K
-    parcela = parcela.toFixed(2)
-
-    while (!(prestacao < 1)) {
+    while (prestacao > 0) {
       pagoEmJuros = prestacao * juros
-      pagoEmJuros = pagoEmJuros.toFixed(2)
-
-      amortizacao = parcela - pagoEmJuros
-      amortizacao = amortizacao.toFixed(2)
-
+      parcela = amortizacao + pagoEmJuros
       prestacao -= amortizacao
-      prestacao = prestacao.toFixed(2)
+      result.push({ parcela, amortizacao, pagoEmJuros, prestacao })
 
-      result.push({
-        parcela,
-        amortizacao,
-        pagoEmJuros,
-        prestacao
-      })
-
-      totalParcela += Number(parcela)
-      totalPagoJuros += Number(pagoEmJuros)
-      totalAmortizacao += Number(amortizacao)
+      totalParcela += parcela
+      totalPagoJuros += pagoEmJuros
+      totalAmortizacao += amortizacao
     }
-
-    let total = [
-      totalParcela.toFixed(2),
-      totalPagoJuros.toFixed(2),
-      totalAmortizacao.toFixed(2)
-    ]
+    let total = [totalParcela, totalPagoJuros, totalAmortizacao]
     this.setState({ total })
     this.setState({ result })
   }
@@ -120,7 +95,7 @@ export default class SisConstante extends Component {
 
   renderTable = () => (
     <>
-      <table className="table table-bordered table-hover">
+      <table>
         <thead>
           <tr>
             <th>Parcela</th>
@@ -157,17 +132,16 @@ export default class SisConstante extends Component {
   }
 
   componentDidMount = () => {
-    window.document.title = 'Amortização Francesa - JADE'
+    window.document.title = 'Amortização Constante - JADE'
   }
 
   render() {
     return (
-      <div className="App">
+      <div>
         <h3>Insira os dados para continuar</h3>
         {!this.state.isValid && this.renderError()}
-        <form className="form-group" onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Prestação"
             name="prestacao"
@@ -175,7 +149,6 @@ export default class SisConstante extends Component {
             value={this.state.prestacao}
           />
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Juros em porcentagem"
             name="juros"
@@ -183,20 +156,19 @@ export default class SisConstante extends Component {
             value={this.state.juros}
           />
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Período em meses"
             name="periodo"
             onChange={this.handleChange}
             value={this.state.periodo}
           />
-          <input className="opcoes" type="submit" value="Calcular" />
-          <button className="opcoes" onClick={this.limpar}>
+          <input type="submit" value="Calcular" />
+          <button onClick={this.limpar}>
             Limpar
           </button>
         </form>
         {this.state.isLoaded && this.renderTable()}
-        <Link to={'/'}>Voltar ao início</Link>
+        <Link to="/">Voltar ao início</Link>
       </div>
     )
   }

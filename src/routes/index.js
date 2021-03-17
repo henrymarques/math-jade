@@ -1,16 +1,16 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import Inicio from '../Components/Inicio'
-import CapSimples from '../Components/Capitalizacao/Simples'
-import CapComposta from '../Components/Capitalizacao/Composta'
-import SisConstante from '../Components/Amortizacao/SisConstante'
-import SisFrances from '../Components/Amortizacao/SisFrances'
+import Inicio from '../Pages/Inicio'
+import CapSimples from '../Pages/Capitalizacao/Simples'
+import CapComposta from '../Pages/Capitalizacao/Composta'
+import SisConstante from '../Pages/Amortizacao/SisConstante'
+import SisFrances from '../Pages/Amortizacao/SisFrances'
 
-import Coringa from '../Components'
+import Coringa from '../Pages'
 
 const Routes = () => (
-  <BrowserRouter>
+  <Router>
     <Switch>
       <Route exact path="/" component={Inicio} />
       <Route path="/capitalizacao/simples" component={CapSimples} />
@@ -19,7 +19,7 @@ const Routes = () => (
       <Route path="/amortizacao/frances" component={SisFrances} />
       <Route component={Coringa} />
     </Switch>
-  </BrowserRouter>
+  </Router>
 )
 
 export default Routes

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import './cap.css'
-
 export default class CapSimples extends Component {
   constructor(props) {
     super(props)
@@ -39,6 +37,7 @@ export default class CapSimples extends Component {
       this.setState({ isValid })
       return
     }
+    this.setState({ isValid })
     this.calcular(item)
   }
 
@@ -52,45 +51,40 @@ export default class CapSimples extends Component {
 
     switch (item) {
       case 'capital': {
-        if (juros === 0) {
-          capital = montante / (1 + (taxa / 100) * (tempo / 30))
-        } else {
-          capital = montante - juros
-        }
+        capital = montante / Math.pow(1 + taxa / 100, tempo / 30)
         capital = capital.toFixed(2)
         this.setState({ capital })
         break
       }
       case 'taxa': {
         if (juros === 0) {
-          taxa = (montante - capital) / (capital * (tempo / 30))
+          taxa = Math.pow(montante / capital, 1 / (tempo / 30)) - 1
         } else {
-          taxa = juros / (capital * (tempo / 30))
+          taxa = Math.pow(juros, 1 / (tempo / 30)) - 1
         }
-        taxa = (taxa * 100).toFixed(2)
+        taxa = taxa * 100
+        taxa = taxa.toFixed(2)
         this.setState({ taxa })
         break
       }
       case 'juros': {
-        juros = capital * (tempo / 30) * (taxa / 100)
+        juros = capital * [Math.pow(1 + taxa / 100, tempo / 30) - 1]
+        juros = juros.toFixed(2)
         this.setState({ juros })
         break
       }
       case 'tempo': {
-        if (juros === 0) {
-          tempo = (montante - capital) / (capital * taxa)
-        } else {
-          tempo = juros / (capital * taxa)
-        }
+        tempo = Math.log(montante / capital) / Math.log(1 + taxa)
         tempo = tempo.toFixed(2)
-        this.setState({ tempo })
+        this.setState({ tempo: tempo * 30 })
         break
       }
       case 'montante': {
         if (capital === 0) {
+        } else {
+          montante = capital * Math.pow(1 + taxa / 100, tempo / 30)
         }
-        montante = capital * (1 + (taxa / 100) * (tempo / 30))
-
+        montante = montante.toFixed(2)
         this.setState({ montante })
         break
       }
@@ -120,18 +114,17 @@ export default class CapSimples extends Component {
   }
 
   componentDidMount() {
-    document.title = 'Capitalização Simples - JADE'
+    document.title = 'Capitalização Composta - JADE'
   }
 
   render() {
     return (
-      <div className="Index">
+      <div>
         <h3>Deixe em branco o campo que deseja calcular</h3>
         {!this.state.isValid && this.renderError()}
         <span>Se o campo não estiver sendo usado, insira 0</span>
-        <form className="form-group" onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Montante"
             value={this.state.montante}
@@ -139,7 +132,6 @@ export default class CapSimples extends Component {
             onChange={this.handleChange}
           />
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Capital"
             value={this.state.capital}
@@ -147,7 +139,6 @@ export default class CapSimples extends Component {
             onChange={this.handleChange}
           />
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Taxa em porcentagem"
             value={this.state.taxa}
@@ -155,7 +146,6 @@ export default class CapSimples extends Component {
             onChange={this.handleChange}
           />
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Juros"
             value={this.state.juros}
@@ -163,7 +153,6 @@ export default class CapSimples extends Component {
             onChange={this.handleChange}
           />
           <input
-            className="form-control shadow-none"
             type="text"
             placeholder="Período em dias"
             value={this.state.tempo}
@@ -177,12 +166,12 @@ export default class CapSimples extends Component {
           >
             <option value="teste">Teste</option>
           </select> */}
-          <input className="opcoes" type="submit" value="Calcular" />
-          <button className="opcoes" onClick={this.limpar}>
+          <input type="submit" value="Calcular" />
+          <button onClick={this.limpar}>
             Limpar
           </button>
         </form>
-        <Link to={'/'}>Voltar ao início</Link>
+        <Link to="/">Voltar ao início</Link>
       </div>
     )
   }
